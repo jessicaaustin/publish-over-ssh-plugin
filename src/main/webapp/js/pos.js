@@ -72,6 +72,7 @@ function bap_hide_exec_controls(container) {
 
 function bap_blur_inputs(container) {
     $(container).getElementsBySelector('input').each(function(inputControl) {
+        if ($(inputControl).hasClassName('ssh-config-name')) { return; } // avoid recursive event
         fireEvent(inputControl, 'change');
     });
     $(container).getElementsBySelector('textarea').each(function(inputControl) {
@@ -88,7 +89,7 @@ var sshBehave = {
         }
         bap_blur_inputs(table);
     },
-    "SELECT.ssh-config-name" : function(configName) {
+    "INPUT.ssh-config-name" : function(configName) {
         configName.onchange = function() {
             var publisher = bap_get_publisher_from_configName(configName);
             if (bap_is_exec_disabled(configName)) {
